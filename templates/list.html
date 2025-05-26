@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+            <h2>Simple List of All Games!!</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Games</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in games %}
+                    <tr><td>{{ game }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+{% endblock %}

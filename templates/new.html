@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+            <form action="{{ url_for('create') }}" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" />
+                        <div id="NameHelpBlock" class="form-text">
+                            Put the main title here. It must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" name="category" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="console">Console</label>
+                        <input type="text" id="console" name="console" class="form-control" />
+                    </div>
+                </fieldset>
+                <br />
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+{% endblock %}
