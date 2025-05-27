@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
             <h2>Simple List of All Games!!</h2>
-            <table>
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Games</th>
+                        <th>Name</th>
+                        <th>Game Category</th>
+                        <th>Game Console</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for game in games %}
-                    <tr><td>{{ game }}</td></tr>
+                    <tr>
+                        <td>{{ game.name }}</td>
+                        <td>{{ game.category }}</td>
+                        <td>{{ game.console }}</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <a href="/print" class="btn btn-info">Print</a>
+            <br />
 {% endblock %}
