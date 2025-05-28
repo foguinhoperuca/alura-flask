@@ -7,6 +7,7 @@ from termcolor import colored
 import weasyprint
 
 from business import Game, GameConsole, GameCategory, get_initial_catalog, get_users, User
+from helper import validate_user_logged_in
 
 
 load_dotenv()
@@ -48,13 +49,12 @@ def list_by_category():
 
 
 @app.route('/new')
+@validate_user_logged_in
 def new():
-    if 'user' not in session or session['user'] is None:
-        return redirect(url_for('login', next_page=url_for('new')))
-
     return render_template('new.html', title='New Game Setup', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
 
 
+# FIXME should be protected by login/password
 @app.route('/create', methods=['POST',])
 def create():
     name: str = request.form['name']
@@ -64,6 +64,33 @@ def create():
     game_catalog.append(Game(name=name, category=category, console=console))
 
     return redirect(url_for('list_games'))
+
+
+@app.route('/edit/<int:id>')
+@validate_user_logged_in
+def edit(id: int):
+    return render_template('edit.html', title='Edit Game', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
+
+
+@app.route('/update/<int:id>', methods=['POST',])
+@validate_user_logged_in
+def update():
+    pass
+
+
+@app.route('/delete//<int:id>')
+@validate_user_logged_in
+def delete(id: int):
+    pass
+
+
+@app.route('/print')
+def print():
+    css = weasyprint.CSS('static/print.css')
+    html = weasyprint.HTML(string=render_template('list_print.html', title='Printable Game List', games=game_catalog))
+    html.write_pdf('/tmp/game_list.pdf', stylesheets=[css])
+
+    return send_file('/tmp/game_list.pdf', download_name='game_list.pdf', mimetype='application/pdf')
 
 
 @app.route('/login')
@@ -102,13 +129,5 @@ def authentication():
         return redirect(url_for('login', next_page=request.form['next_page']))
 
 
-@app.route('/print')
-def print():
-    css = weasyprint.CSS('static/print.css')
-    html = weasyprint.HTML(string=render_template('list_print.html', title='Printable Game List', games=game_catalog))
-    html.write_pdf('/tmp/game_list.pdf', stylesheets=[css])
-
-    return send_file('/tmp/game_list.pdf', download_name='game_list.pdf', mimetype='application/pdf')
-
-
-app.run(host=ALLOWED_HOST, port=ALLOWED_PORT)
+if __name__ == '__main__':
+    app.run(host=ALLOWED_HOST, port=ALLOWED_PORT)

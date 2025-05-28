@@ -31,10 +31,19 @@ class GameConsole(GameAttribute):
 
 
 class Game:
-    def __init__(self, name: str, category: GameCategory = GameCategory.GENERAL, console: GameConsole = GameConsole.PC) -> None:
+    def __init__(self, id: int, name: str, category: GameCategory = GameCategory.GENERAL, console: GameConsole = GameConsole.PC) -> None:
+        self._id: int = id
         self._name: str = name
         self._category: GameCategory = category
         self._console: GameConsole = console
+
+    @property
+    def id(self) -> int:
+        return self._id
+
+    @id.setter
+    def id(self, vl: int) -> None:
+        self._id = vl
 
     @property
     def name(self) -> str:
@@ -99,16 +108,20 @@ class Game:
 def get_initial_catalog() -> List[Game]:
     """Seed data to start app and test"""
     return [
-        Game(name='God of War V', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS5),
-        Game(name='God of War IV', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS4),
-        Game(name='God Of War III', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS3),
-        Game(name='God of War II', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS2),
-        Game(name='God of War I', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS1),
-        Game(name='The Last of Us part I', category=GameCategory.ZOMBIE, console=GameConsole.PS3),
-        Game(name='The Last of Us part II', category=GameCategory.ZOMBIE, console=GameConsole.PS4),
-        Game(name='Zelda\'s Majora\'s Mask', category=GameCategory.ADVENTURE, console=GameConsole.N64),
-        Game(name='Zelda Ocarina of Time', category=GameCategory.ADVENTURE, console=GameConsole.N64)
+        Game(id=1, name='God of War V', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS5),
+        Game(id=2, name='God of War IV', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS4),
+        Game(id=3, name='God Of War III', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS3),
+        Game(id=4, name='God of War II', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS2),
+        Game(id=5, name='God of War I', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS1),
+        Game(id=6, name='The Last of Us part I', category=GameCategory.ZOMBIE, console=GameConsole.PS3),
+        Game(id=7, name='The Last of Us part II', category=GameCategory.ZOMBIE, console=GameConsole.PS4),
+        Game(id=8, name='Zelda\'s Majora\'s Mask', category=GameCategory.ADVENTURE, console=GameConsole.N64),
+        Game(id=9, name='Zelda Ocarina of Time', category=GameCategory.ADVENTURE, console=GameConsole.N64)
     ]
+
+
+def get_user(id: int, catalog: List[Game]) -> Game:
+    return list(filter(lambda game: game.id == id, catalog))[0]
 
 
 class User:
