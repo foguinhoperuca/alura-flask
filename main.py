@@ -75,7 +75,7 @@ def login():
 @app.route('/logout')
 def logout():
     session['user'] = None
-    flash('Logout was successfully')
+    flash('Logout was successfully', 'info')
 
     return redirect(url_for('index'))
 
@@ -86,19 +86,18 @@ def authentication():
         user: User = users[request.form['username']]
         if user.authenticate(username=request.form['username'], password=request.form['password']):
             session['user'] = user.username
-            flash(f'{user} was successfully logged!!')
+            flash(f'{user} was successfully logged!!', 'success')
 
-            # return redirect(url_for(request.form['next_page']))
             return redirect(request.form['next_page'])
         else:
             session['user'] = None
-            flash(f'{user} failed to login!!')
+            flash(f'{user} failed to login!!', 'danger')
 
             return redirect(url_for('login', next_page=request.form['next_page']))
 
     else:
         session['user'] = None
-        flash(f'{request.form["username"]} User not available!!')
+        flash(f'{request.form["username"]} User not available!!', 'warning')
 
         return redirect(url_for('login', next_page=request.form['next_page']))
 

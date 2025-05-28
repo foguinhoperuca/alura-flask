@@ -57,3 +57,5 @@ dump-fixture-model:
 	python3 manage.py dumpdata school.course | jq > school/fixtures/model.json
 	@date
 
+generate-secrets-flask:
+	@python3 -c 'import secrets; print(secrets.token_hex())'
