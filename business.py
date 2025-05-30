@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Set
 
 
 class GameAttribute(StrEnum):
@@ -31,8 +31,11 @@ class GameConsole(GameAttribute):
 
 
 class Game:
-    def __init__(self, id: int, name: str, category: GameCategory = GameCategory.GENERAL, console: GameConsole = GameConsole.PC) -> None:
-        self._id: int = id
+    LATEST_ID: int = 0
+
+    def __init__(self, name: str, category: GameCategory = GameCategory.GENERAL, console: GameConsole = GameConsole.PC) -> None:
+        Game.LATEST_ID += 1
+        self._id: int = Game.LATEST_ID
         self._name: str = name
         self._category: GameCategory = category
         self._console: GameConsole = console
@@ -70,13 +73,19 @@ class Game:
         self._console = vl
 
     def __str__(self) -> str:
-        return f'[{self.category}] **{self.name}** can be played in {self.console}'
+        return f'[{self.category}] **{self.name}** ({self.id}) can be played in {self.console}'
 
     def __repr__(self) -> str:
         return self.__str__()
 
+    def __hash__(self):
+        return hash(self._id)
+
+    def __eq__(self, other) -> bool:
+        return self.id == other.id
+
     @staticmethod
-    def order_by(games: List[Any], attr: GameAttribute = GameConsole) -> Dict[GameAttribute, List[Any]]:
+    def order_by(games: Set[Any], attr: GameAttribute = GameConsole) -> Dict[GameAttribute, List[Any]]:
         """
         Order an list of games by console or category (Game Attribute).
         Params:
@@ -104,20 +113,49 @@ class Game:
 
         return ordered_games
 
+    @staticmethod
+    def find_game_in_catalog(id: int, catalog: List[Any]) -> Optional[Any]:
+        """
+        Search for a game (by id) in catalog and return it!
+        Params:
+            id: int = real id from game
+            catalog: List[Game] = A list of games saved in memory
+        Returns:
+            Game = Game found in catalog. None otherwise.
+        """
+        found: List[Game] = [game for game in catalog if game.id == id]
+        if len(found) == 0:
+            print('[WARN] No game found in catalog!!')
+            return None
 
-def get_initial_catalog() -> List[Game]:
+        return found[0]
+
+    @staticmethod
+    def delete(id: int, catalog: List[Any]) -> None:
+        original_len_catalog: int = len(catalog)
+        found: Game = Game.find_game_in_catalog(id, catalog)
+        if found is None:
+            raise Exception('No game found in catalog!!')
+
+        catalog.remove(found)
+
+        actual_len_catalog: int = len(catalog)
+        print(f'=== Removed with success === original: {original_len_catalog} vs. actual: {actual_len_catalog}')
+
+
+def get_initial_catalog() -> Set[Game]:
     """Seed data to start app and test"""
-    return [
-        Game(id=1, name='God of War V', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS5),
-        Game(id=2, name='God of War IV', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS4),
-        Game(id=3, name='God Of War III', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS3),
-        Game(id=4, name='God of War II', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS2),
-        Game(id=5, name='God of War I', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS1),
-        Game(id=6, name='The Last of Us part I', category=GameCategory.ZOMBIE, console=GameConsole.PS3),
-        Game(id=7, name='The Last of Us part II', category=GameCategory.ZOMBIE, console=GameConsole.PS4),
-        Game(id=8, name='Zelda\'s Majora\'s Mask', category=GameCategory.ADVENTURE, console=GameConsole.N64),
-        Game(id=9, name='Zelda Ocarina of Time', category=GameCategory.ADVENTURE, console=GameConsole.N64)
-    ]
+    return {
+        Game(name='God of War V', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS5),
+        Game(name='God of War IV', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS4),
+        Game(name='God Of War III', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS3),
+        Game(name='God of War II', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS2),
+        Game(name='God of War I', category=GameCategory.HACK_N_SLASH, console=GameConsole.PS1),
+        Game(name='The Last of Us part I', category=GameCategory.ZOMBIE, console=GameConsole.PS3),
+        Game(name='The Last of Us part II', category=GameCategory.ZOMBIE, console=GameConsole.PS4),
+        Game(name='Zelda\'s Majora\'s Mask', category=GameCategory.ADVENTURE, console=GameConsole.N64),
+        Game(name='Zelda Ocarina of Time', category=GameCategory.ADVENTURE, console=GameConsole.N64)
+    }
 
 
 def get_user(id: int, catalog: List[Game]) -> Game:

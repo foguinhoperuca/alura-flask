@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List
+from typing import Dict, List, Set
 
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, send_file, session, url_for
@@ -12,14 +12,15 @@ from helper import validate_user_logged_in
 
 load_dotenv()
 DEBUG = bool(int(os.getenv('DEBUG', 0)))
-ALLOWED_HOST = str(os.getenv('ALLOWED_HOST', 'localhost'))
-ALLOWED_PORT = str(os.getenv('ALLOWED_PORT', '8080'))
+ALLOWED_HOST: str = str(os.getenv('ALLOWED_HOST', 'localhost'))
+ALLOWED_PORT: str = str(os.getenv('ALLOWED_PORT', '8080'))
+DB_ENGINE: str = str(os.getenv('DB_ENGINE', 'memory'))
 if DEBUG:
     print(colored(f'{ALLOWED_HOST=} :: {ALLOWED_PORT=}', 'yellow'))
 
 app = Flask(__name__)
 app.secret_key = str(os.getenv('SECRET_KEY'))
-game_catalog: List[str] = get_initial_catalog()
+game_catalog: Set[str] = get_initial_catalog()
 users: Dict[str, User] = get_users()
 
 
@@ -54,14 +55,16 @@ def new():
     return render_template('new.html', title='New Game Setup', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
 
 
-# FIXME should be protected by login/password
 @app.route('/create', methods=['POST',])
+@validate_user_logged_in
 def create():
     name: str = request.form['name']
-    category: GameCategory = request.form['category']
-    console: GameConsole = request.form['console']
-
-    game_catalog.append(Game(name=name, category=category, console=console))
+    # TODO validate category and console
+    category: GameCategory = GameCategory(request.form['category'])
+    console: GameConsole = GameConsole(request.form['console'])
+    game: Game = Game(name=name, category=category, console=console)
+    game_catalog.add(game)
+    flash(f'Game {game} was successfully saved!', 'success')
 
     return redirect(url_for('list_games'))
 
@@ -69,19 +72,47 @@ def create():
 @app.route('/edit/<int:id>')
 @validate_user_logged_in
 def edit(id: int):
-    return render_template('edit.html', title='Edit Game', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
+    game: Game = Game.find_game_in_catalog(id=id, catalog=game_catalog)
+    if game is None:
+        flash(f'Game id {id} not found. Make sure that id is correct!', 'error')
+        return redirect(url_for('list_games'))
+
+    return render_template('edit.html', title='Edit Game', game=game, categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
 
 
 @app.route('/update/<int:id>', methods=['POST',])
 @validate_user_logged_in
-def update():
-    pass
+def update(id: int):
+    game: Game = Game.find_game_in_catalog(id=id, catalog=game_catalog)
+    if game is None:
+        flash(f'Game id {id} not found. Make sure that id is correct!', 'error')
+    else:
+        name: str = request.form['name']
+        # TODO validate category and console
+        category: GameCategory = GameCategory(request.form['category'])
+        console: GameConsole = GameConsole(request.form['console'])
+
+        game.name = name
+        game.category = category
+        game.console = console
+
+        flash(f'Game {game} successfully updated!!', 'success')
+
+    return redirect(url_for('list_games'))
 
 
-@app.route('/delete//<int:id>')
+@app.route('/delete/<int:id>')
 @validate_user_logged_in
 def delete(id: int):
-    pass
+    if DB_ENGINE == 'memory':
+        Game.delete(id=id, catalog=game_catalog)
+        flash('Game was deleted successfuly!', 'success')
+    elif DB_ENGINE == 'mysql':
+        flash('DB Engine mysql not implemented yet!', 'warning')
+    else:
+        flash('No DB Engine was setted. Game still in memory', 'error')
+
+    return redirect(url_for('list_games'))
 
 
 @app.route('/print')

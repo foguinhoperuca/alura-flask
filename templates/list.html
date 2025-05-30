@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-            <h2>Simple List of All Games!!</h2>
+            <h2>
+                List of All Games!!
+                <br />
+                <small class="h6 text-body-secondary">total games {{ games|length }}</small>
+            </h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -27,5 +31,6 @@
                 </tbody>
             </table>
             <a href="/print" class="btn btn-info">Print</a>
+            <a href="/new" class="btn btn-success">New</a>
             <br />
 {% endblock %}
