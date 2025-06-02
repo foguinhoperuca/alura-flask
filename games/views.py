@@ -1,4 +1,3 @@
-import os
 from typing import Set
 
 from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
@@ -12,7 +11,6 @@ from .models import Game, GameConsole, GameCategory, get_initial_catalog
 from helper import validate_user_logged_in
 
 
-DB_ENGINE: str = str(os.getenv('DB_ENGINE', 'memory'))
 bp_game = Blueprint('bp_game', __name__, template_folder='templates', static_folder='static')
 game_catalog: Set[str] = get_initial_catalog()
 
@@ -89,12 +87,7 @@ def update(id: int):
 @bp_game.route('/delete/<int:id>')
 @validate_user_logged_in
 def delete(id: int):
-    if DB_ENGINE == 'memory':
-        Game.delete(id=id, catalog=game_catalog)
-        flash('Game was deleted successfuly!', 'success')
-    elif DB_ENGINE == 'mysql':
-        flash('DB Engine mysql not implemented yet!', 'warning')
-    else:
-        flash('No DB Engine was setted. Game still in memory', 'error')
+    Game.delete(id=id, catalog=game_catalog)
+    flash('Game was deleted successfuly!', 'success')
 
     return redirect(url_for('bp_game.list'))

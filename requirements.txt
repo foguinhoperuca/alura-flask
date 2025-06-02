@@ -2,3 +2,5 @@ flask
 python-dotenv
 termcolor
 weasyprint
+mysql-connector-python
+flask-sqlalchemy
