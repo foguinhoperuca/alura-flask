@@ -51,7 +51,7 @@ def create():
     game_catalog.add(game)
     flash(f'Game {game} was successfully saved!', 'success')
 
-    return redirect(url_for('bp_game.list_games'))
+    return redirect(url_for('bp_game.list'))
 
 
 @bp_game.route('/edit/<int:id>')
@@ -60,7 +60,7 @@ def edit(id: int):
     game: Game = Game.find_game_in_catalog(id=id, catalog=game_catalog)
     if game is None:
         flash(f'Game id {id} not found. Make sure that id is correct!', 'error')
-        return redirect(url_for('bp_game.list_games'))
+        return redirect(url_for('bp_game.list'))
 
     return render_template('games/edit.html', title='Edit Game', game=game, categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
 
@@ -83,7 +83,7 @@ def update(id: int):
 
         flash(f'Game {game} successfully updated!!', 'success')
 
-    return redirect(url_for('bp_game.list_games'))
+    return redirect(url_for('bp_game.list'))
 
 
 @bp_game.route('/delete/<int:id>')
@@ -97,4 +97,4 @@ def delete(id: int):
     else:
         flash('No DB Engine was setted. Game still in memory', 'error')
 
-    return redirect(url_for('bp_game.list_games'))
+    return redirect(url_for('bp_game.list'))

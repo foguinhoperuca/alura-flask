@@ -8,7 +8,7 @@ def validate_user_logged_in(fn):
     def wrapper(*args, **kwargs):
         print('---------- Validate user logged in ----------')
         if 'user' not in session or session['user'] is None:
-            return redirect(url_for('login', next_page=url_for('index')))
+            return redirect(url_for('bp_auth.login', next_page=url_for('index')))
 
         return fn(*args, **kwargs)
 
