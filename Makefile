@@ -59,3 +59,9 @@ dump-fixture-model:
 
 generate-secrets-flask:
 	@python3 -c 'import secrets; print(secrets.token_hex())'
+
+run:
+	@flask run --host=0.0.0.0 --port=5000
+	# Alternative: using -m to make import ..helper viable
+	@python3 -m app
+	
