@@ -4,3 +4,5 @@ termcolor
 weasyprint
 mysql-connector-python
 flask-sqlalchemy
+flask-bcrypt
+flask-wtf

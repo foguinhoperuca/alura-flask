@@ -3,21 +3,22 @@ from typing import Set
 from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
 import weasyprint
 
-# from .models import Game, GameConsole, GameCategory, get_initial_catalog
+from .models import GamesDB
+from helper import GameAttribute, GameCategory, GameConsole
 
-# FIXME use import sys bellow to workarround import of helper bellow
-# import sys
-# sys.path.append('..')
 from helper import validate_user_logged_in
 
 
 bp_game_db = Blueprint('bp_game_db', __name__, template_folder='templates', static_folder='static')
-# game_catalog: Set[str] = get_initial_catalog()
 
 
 @bp_game_db.route('/list/')
 def list():
-    return render_template('games_db/list.html', title='My Personal Game List - Database Version')
+    game_name: str = 'Super Mario Bros 3'
+    game_db: GamesDB = GamesDB.query.filter_by(id=1)
+    game_name = game_db[0].name
+
+    return render_template('games_db/list.html', title='My Personal Game List - Database Version', game_name=game_name)
 
 
 # @bp_game_db.route('/list/')
@@ -35,14 +36,19 @@ def list():
 #         return send_file('/tmp/game_list.pdf', download_name='game_list.pdf', mimetype='application/pdf')
 # 
 #     return render_template('games/list.html', title='My Personal Game List', games=game_catalog)
-# 
-# 
-# @bp_game_db.route('/new')
-# @validate_user_logged_in
-# def new():
-#     return render_template('games/new.html', title='New Game Setup', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
-# 
-# 
+
+
+@bp_game_db.route('/new')
+@validate_user_logged_in
+def new():
+    game_name: str = 'Super Mario Bros 3'
+    game_db: GamesDB = GamesDB.query.filter_by(id=1)
+    game_name = game_db[0].name
+
+    return render_template('games_db/list.html', title='My Personal Game List - Database Version', game_name=game_name)
+    # return render_template('games_db/list.html', title='New Game Setup', categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
+
+
 # @bp_game_db.route('/create', methods=['POST',])
 # @validate_user_logged_in
 # def create():

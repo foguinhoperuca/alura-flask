@@ -1,5 +1,9 @@
 from typing import Dict
 
+from flask_bcrypt import check_password_hash
+
+from app import db
+
 
 class User:
     def __init__(self, name: str, username: str, password: str) -> None:
@@ -52,3 +56,21 @@ def get_users() -> Dict[str, User]:
         user_01.username: user_01,
         user_02.username: user_02
     }
+
+
+class UsersDB(db.Model):
+    username = db.Column(db.String(16), primary_key=True)
+    name = db.Column(db.String(256), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+
+    def __str__(self) -> str:
+        return f'[{self.username}] {self.name}'
+
+    def __repr__(self) -> str:
+        return f'[{self.username}] {self.name} :: {self.password}'
+
+    def authenticate(self, username: str, password: str) -> bool:
+        if self.username == username and check_password_hash(self.password, password):
+            return True
+
+        return False

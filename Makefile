@@ -50,6 +50,11 @@ ctags:
 	ctags --options=.ctags -R .
 	ctags --options=.ctags -R -e .
 
+syslink:
+	@clear
+	ln -s .credentials/.env-mysql .env
+	ln -s .credentials/.my_local.cnf .my.cnf
+
 dump-fixture-model:
 	@clear
 	@date
@@ -64,4 +69,12 @@ run:
 	@flask run --host=0.0.0.0 --port=5000
 	# Alternative: using -m to make import ..helper viable
 	@python3 -m app
-	
+
+terraform_db:
+	@mysql --defaults-extra-file=.my.cnf < database/terraform.sql
+
+db:
+	@clear
+	@date
+	mysql --defaults-extra-file=.my.cnf < database/ddl.sql
+	mysql --defaults-extra-file=.my.cnf < database/seed.sql

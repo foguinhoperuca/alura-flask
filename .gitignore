@@ -136,3 +136,4 @@ dmypy.json
 tags
 TAGS
 .credentials
+.my*.cnf

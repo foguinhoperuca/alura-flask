@@ -1,3 +1,4 @@
+from enum import StrEnum
 from functools import wraps
 
 from flask import redirect, session, url_for
@@ -14,3 +15,31 @@ def validate_user_logged_in(fn):
         return fn(*args, **kwargs)
 
     return wrapper
+
+
+class GameAttribute(StrEnum):
+    pass
+
+
+class GameCategory(GameAttribute):
+    ADVENTURE = 'Adventure'
+    FIGHT = 'Fight'
+    GENERAL = 'General'
+    HACK_N_SLASH = 'Hack and Slash'
+    PUZZLE = 'Puzzle'
+    RPG = 'rpg'
+    STRATEGY = 'Strategy'
+    ZOMBIE = 'Zombie'
+
+
+class GameConsole(GameAttribute):
+    ATARI = 'atari'
+    PC = 'pc'
+    PS1 = 'ps1'
+    PS2 = 'ps2'
+    PS3 = 'ps3'
+    PS4 = 'ps4'
+    PS5 = 'ps5'
+    N64 = 'n64'
+    SNES = 'snes'
+    NES = 'nes'

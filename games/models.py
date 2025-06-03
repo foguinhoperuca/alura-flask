@@ -1,33 +1,6 @@
-from enum import StrEnum
 from typing import Any, Dict, List, Optional, Set
 
-
-class GameAttribute(StrEnum):
-    pass
-
-
-class GameCategory(GameAttribute):
-    ADVENTURE = 'Adventure'
-    FIGHT = 'Fight'
-    GENERAL = 'General'
-    HACK_N_SLASH = 'Hack and Slash'
-    PUZZLE = 'Puzzle'
-    RPG = 'rpg'
-    STRATEGY = 'Strategy'
-    ZOMBIE = 'Zombie'
-
-
-class GameConsole(GameAttribute):
-    ATARI = 'atari'
-    PC = 'pc'
-    PS1 = 'ps1'
-    PS2 = 'ps2'
-    PS3 = 'ps3'
-    PS4 = 'ps4'
-    PS5 = 'ps5'
-    N64 = 'n64'
-    SNES = 'snes'
-    NES = 'nes'
+from helper import GameAttribute, GameCategory, GameConsole
 
 
 class Game:
@@ -156,5 +129,3 @@ def get_initial_catalog() -> Set[Game]:
         Game(name='Zelda\'s Majora\'s Mask', category=GameCategory.ADVENTURE, console=GameConsole.N64),
         Game(name='Zelda Ocarina of Time', category=GameCategory.ADVENTURE, console=GameConsole.N64)
     }
-
-
