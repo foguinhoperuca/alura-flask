@@ -1,10 +1,10 @@
 INSERT INTO alura_flask.games_db (name, category, console) VALUES
-    ('Super Mario Bros. 1', 'ADVENTURE', 'NES'),
-    ('Super Mario Bros. 2', 'ADVENTURE', 'NES'),
-    ('Super Mario Bros. 3', 'ADVENTURE', 'NES'),
-    ('Super Mario World', 'ADVENTURE', 'SNES'),
-    ('Super Mario 64', 'ADVENTURE', 'N64'),
-    ('Tetris', 'PUZZLE', 'ATARI')
+    ('Super Mario Bros. 1', 'Adventure', 'nes'),
+    ('Super Mario Bros. 2', 'Adventure', 'nes'),
+    ('Super Mario Bros. 3', 'Adventure', 'nes'),
+    ('Super Mario World', 'Adventure', 'snes'),
+    ('Super Mario 64', 'Adventure', 'n64'),
+    ('Tetris', 'Puzzle', 'atari')
 ;
 
 -- TODO implement users

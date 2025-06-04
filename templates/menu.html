@@ -1,28 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-            <h2>Games in DB</h2>
-            <div class="list-group">
-              <a href="db/new" class="list-group-item list-group-item-action">New</a>
-              <a href="db/list/" class="list-group-item list-group-item-action">List all Games</a>
-              <a href="db/list/print" class="list-group-item list-group-item-action">PRINT List all Games</a>
-              <a href="db/list/console" class="list-group-item list-group-item-action">List By Console</a>
-              <a href="db/list/category" class="list-group-item list-group-item-action">List By Category</a>
-            </div>
-            <br />
+            <div class="row">
+                <div class="col-md-5">
+                    <h2>Games in DB</h2>
+                    <div class="list-group">
+                        <a href="{{ url_for('bp_games_db.new') }}" class="list-group-item list-group-item-action">New</a>
+                        <a href="{{ url_for('bp_games_db.list') }}" class="list-group-item list-group-item-action">List all Games</a>
+                    </div>
+                </div>
+                <br />
+                
+                <div class="col-md-2">
+                    <h2>Auth</h2>
+                    <div class="list-group">
+                      <a href="login?next_page=list" class="list-group-item list-group-item-action">Login</a>
+                      <a href="logout" class="list-group-item list-group-item-action">Logout</a>
+                    </div>
+                </div>
+                <br />
 
-            <h2>Auth</h2>
-            <div class="list-group">
-              <a href="login?next_page=list" class="list-group-item list-group-item-action">Login</a>
-              <a href="logout" class="list-group-item list-group-item-action">Logout</a>
-            </div>
-            <br />
-
-            <h2>Games in Memory</h2>
-            <div class="list-group">
-              <a href="new" class="list-group-item list-group-item-action">New</a>
-              <a href="list/" class="list-group-item list-group-item-action">List all Games</a>
-              <a href="list/print" class="list-group-item list-group-item-action">PRINT List all Games</a>
-              <a href="list/console" class="list-group-item list-group-item-action">List By Console</a>
-              <a href="list/category" class="list-group-item list-group-item-action">List By Category</a>
+                <div class="col-md-5">
+                    <h2>Games in Memory</h2>
+                    <div class="list-group">
+                        <a href="{{ url_for('bp_game.new') }}" class="list-group-item list-group-item-action">New</a>
+                        <a href="{{ url_for('bp_game.list') }}" class="list-group-item list-group-item-action">List all Games</a>
+                        <a href="{{ url_for('bp_game.list', format='print') }}" class="list-group-item list-group-item-action">PRINT List all Games</a>
+                        <a href="{{ url_for('bp_game.list', format='console') }}" class="list-group-item list-group-item-action">List By Console</a>
+                        <a href="{{ url_for('bp_game.list', format='category') }}" class="list-group-item list-group-item-action">List By Category</a>
+                    </div>
+                </div>
             </div>
 {% endblock %}

@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-            <h2>
-                List of All Games!!
-                <br />
-                <small class="h6 text-body-secondary">total games {{ games|length }}</small>
-            </h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -23,14 +18,13 @@
                         <td>{{ game.category }}</td>
                         <td>{{ game.console }}</td>
                         <td>
-                            <a class="btn btn-warning" href="{{ url_for('bp_game.edit', id=game.id) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ url_for('bp_game.delete', id=game.id) }}">Delete</a>
+                            <a class="btn btn-warning" href="{{ url_for('bp_games_db.edit', id=game.id) }}">Edit</a>
+                            <a class="btn btn-danger" href="{{ url_for('bp_games_db.delete', id=game.id) }}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{{ url_for('bp_game.list', format='print') }}" class="btn btn-info">Print</a>
-            <a href="{{ url_for('bp_game.new') }}" class="btn btn-success">New</a>
+            <a href="{{ url_for('bp_games_db.new') }}" class="btn btn-success">New</a>
             <br />
 {% endblock %}

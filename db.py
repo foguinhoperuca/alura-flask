@@ -2,7 +2,7 @@ from flask import current_app, g
 from flask_sqlalchemy import SQLAlchemy
 
 
-# TODO should separate db from app?!
+# TODO should separate db from app?! Use flask tutorial?
 
 def get_db(app):
     if 'db' not in g:

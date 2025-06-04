@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+            <form action="{{ url_for('bp_games_db.create') }}" method="POST" enctype="multipart/form-data">
+                <!-- TODO implement image -->
+                <fieldset>
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-select" aria-label="Choose a Game Category">
+                            <option selected>Choose a Game Category</option>
+                            {% for c in categories %}
+                            <option value="{{ c[1] }}">{{ c[0] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="console">Console</label>
+                        <select id="console" name="console" class="form-select" aria-label="Choose a Game Console">
+                            <option selected>Choose a Game Console</option>
+                            {% for c in consoles %}
+                            <option value="{{ c[1] }}">{{ c[0] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </fieldset>
+                <br />
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+{% endblock %}
