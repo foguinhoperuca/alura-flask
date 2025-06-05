@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
             <form action="{{ url_for('bp_games_db.create') }}" method="POST" enctype="multipart/form-data">
-                <!-- TODO implement image -->
+                <figure class="img-thumbnail col-md-4">
+                    <img class="img-fluid" src="{{ url_for('bp_games_db.cover', file_name='cover_generic.jpg') }}" />
+                    <figcaption>
+                        <label for="cover" class="fileCover">
+                            Change Cover
+                        </label>
+                        <input type="file" name="cover" accept=".jpg" class="" />
+                    </figcaption>
+                </figure>
                 <fieldset>
                     <div class="form-group">
                         <label for="name" class="form-label">Name</label>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 from games.views import bp_game
 from settings import ALLOWED_HOST, ALLOWED_PORT, DEBUG, SECRET_KEY
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.secret_key = SECRET_KEY
 app.config.from_pyfile('settings.py')
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
 from auth.views import bp_auth  # noqa: E402
 from games_db.views import bp_games_db  # noqa: E402

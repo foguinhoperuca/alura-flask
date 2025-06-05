@@ -1,7 +1,8 @@
-from flask import Blueprint, flash, redirect, render_template, request, send_file, url_for
+from flask import Blueprint, flash, redirect, render_template, request, send_from_directory, url_for
 
-from .models import GamesDB
 from helper import GameCategory, GameConsole
+from .models import GamesDB
+from settings import UPLOAD_PATH
 
 from helper import validate_user_logged_in
 
@@ -30,9 +31,11 @@ def create():
     console: GameConsole = GameConsole(request.form['console'])
 
     game: GamesDB = GamesDB(name=name, category=category.value, console=console.value)
-    print(f'GamesDB is {game}')
     if GamesDB.save(game=game):
         flash(f'Game {game} was successfully saved!', 'success')
+        file_uploaded = request.files['cover']
+        # TODO preserv extension
+        file_uploaded.save(f'{UPLOAD_PATH}/cover_{game.id}.jpg')
     else:
         flash(f'Game {game.name} in console {game.console} already exist! No duplication, please.', 'danger')
 
@@ -47,7 +50,9 @@ def edit(id: int):
         flash(f'Game id {id} not found. Make sure that id is correct!', 'danger')
         return redirect(url_for('bp_games_db.list'))
 
-    return render_template('games_db/edit.html', title='Edit Game', game=game, categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
+    cover: str = f'cover_{game.id}.jpg'
+
+    return render_template('games_db/edit.html', title='Edit Game', game=game, cover=cover, categories=[(e.name, e.value) for e in GameCategory], consoles=[(e.name, e.value) for e in GameConsole])
 
 
 @bp_games_db.route('/update/<int:id>', methods=['POST',])
@@ -66,6 +71,8 @@ def update(id: int):
         game.console = console
         if GamesDB.update(game=game):
             flash(f'Game {game} successfully updated!!', 'success')
+            file_uploaded = request.files['cover']
+            file_uploaded.save(f'{UPLOAD_PATH}/cover_{game.id}.jpg')
         else:
             flash(f'Can\'t update game {game} !!', 'danger')
 
@@ -79,3 +86,8 @@ def delete(id: int):
     flash('Game was deleted successfuly!', 'success')
 
     return redirect(url_for('bp_games_db.list'))
+
+
+@bp_games_db.route('/media/uploads/<file_name>')
+def cover(file_name: str):
+    return send_from_directory('media/uploads', file_name)

@@ -64,6 +64,7 @@ dump-fixture-model:
 
 generate-secrets-flask:
 	@python3 -c 'import secrets; print(secrets.token_hex())'
+	@python3 -c "from flask_bcrypt import generate_password_hash; print(generate_password_hash('A12345678a').decode('utf-8'))"
 
 run:
 	@flask run --host=0.0.0.0 --port=5000
