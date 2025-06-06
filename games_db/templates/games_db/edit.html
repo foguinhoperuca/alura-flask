@@ -7,16 +7,9 @@
             </h1>
             <hr />
             <form action="{{ url_for('bp_games_db.update', id=game.id) }}" method="POST" enctype="multipart/form-data">
+                {{ form.csrf_token() }}
                 <input type="hidden" id="id" name="id" value="{{ game.id }}" />
-                <figure class="img-thumbnail col-md-4">
-                    <img class="img-fluid" src="{{ url_for('bp_games_db.cover', file_name=cover) }}" />
-                    <figcaption>
-                        <label for="cover" class="fileContainer">
-                            Change Cover
-                        </label>
-                        <input type="file" name="cover" accept=".jpg" class="" />
-                    </figcaption>
-                </figure>
+                {% include 'games_db/partials/_cover.html' %}
                 <fieldset>
                     <div class="form-group">
                         <label for="name" class="form-label">Name</label>

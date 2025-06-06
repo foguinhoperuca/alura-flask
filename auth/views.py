@@ -3,6 +3,7 @@ from typing import Dict
 from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 
 from auth.models import get_users, User, UsersDB
+from auth.forms import UserForm
 
 
 bp_auth = Blueprint('bp_auth', __name__, template_folder='templates', static_folder='static')
@@ -12,7 +13,8 @@ users: Dict[str, User] = get_users()
 @bp_auth.route('/login')
 def login():
     assert request.args.get('next_page')
-    return render_template('user/login.html', next_page=request.args.get('next_page'))
+    form = UserForm()
+    return render_template('user/login.html', form=form, next_page=request.args.get('next_page'))
 
 
 @bp_auth.route('/logout')
@@ -20,11 +22,12 @@ def logout():
     session['user'] = None
     flash('Logout was successfully', 'info')
 
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
 
 @bp_auth.route('/authentication', methods=['POST',])
 def authentication():
+    # TODO validate form
     if request.form['username'] in users:
         user: User = users[request.form['username']]
         if user.authenticate(username=request.form['username'], password=request.form['password']):

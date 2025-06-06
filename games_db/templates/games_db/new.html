@@ -1,19 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
             <form action="{{ url_for('bp_games_db.create') }}" method="POST" enctype="multipart/form-data">
-                <figure class="img-thumbnail col-md-4">
-                    <img class="img-fluid" src="{{ url_for('bp_games_db.cover', file_name='cover_generic.jpg') }}" />
-                    <figcaption>
-                        <label for="cover" class="fileCover">
-                            Change Cover
-                        </label>
-                        <input type="file" name="cover" accept=".jpg" class="" />
-                    </figcaption>
-                </figure>
+                {{ form.csrf_token() }}
+                {% include 'games_db/partials/_cover.html' %}
                 <fieldset>
                     <div class="form-group">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" />
+                        {{ form.name.label(class='form-label') }}
+                        {{ form.name(class='form-control') }}
                     </div>
                     <div class="form-group">
                         <label for="category">Category</label>

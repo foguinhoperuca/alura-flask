@@ -7,7 +7,7 @@
                         <th>Name</th>
                         <th>Game Category</th>
                         <th>Game Console</th>
-                        <th>Actions</th>
+                        <th columns="3">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,8 +18,9 @@
                         <td>{{ game.category }}</td>
                         <td>{{ game.console }}</td>
                         <td>
+                            <a class="btn btn-info" href="{{ url_for('bp_games_db.show', id=game.id) }}">Show</a>
                             <a class="btn btn-warning" href="{{ url_for('bp_games_db.edit', id=game.id) }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ url_for('bp_games_db.delete', id=game.id) }}">Delete</a>
+                            <a class="btn btn-danger" href="{{ url_for('bp_games_db.destroy', id=game.id) }}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}

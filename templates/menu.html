@@ -5,7 +5,7 @@
                     <h2>Games in DB</h2>
                     <div class="list-group">
                         <a href="{{ url_for('bp_games_db.new') }}" class="list-group-item list-group-item-action">New</a>
-                        <a href="{{ url_for('bp_games_db.list') }}" class="list-group-item list-group-item-action">List all Games</a>
+                        <a href="{{ url_for('bp_games_db.index') }}" class="list-group-item list-group-item-action">List all Games</a>
                     </div>
                 </div>
                 <br />
@@ -13,8 +13,8 @@
                 <div class="col-md-2">
                     <h2>Auth</h2>
                     <div class="list-group">
-                      <a href="login?next_page=list" class="list-group-item list-group-item-action">Login</a>
-                      <a href="logout" class="list-group-item list-group-item-action">Logout</a>
+                      <a href="{{ url_for('bp_auth.login', next_page=url_for('home')) }}" class="list-group-item list-group-item-action">Login</a>
+                      <a href="{{ url_for('bp_auth.logout') }}" class="list-group-item list-group-item-action">Logout</a>
                     </div>
                 </div>
                 <br />

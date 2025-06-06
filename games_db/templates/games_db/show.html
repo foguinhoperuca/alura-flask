@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% include 'games_db/partials/_cover.html' %}
+                <fieldset>
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ game.name }}" disabled readOnly />
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-select" aria-label="Choose a Game Category" disabled readOnly >
+                            <option selected>
+                                {% if game.category is not defined %}s
+                                    Choose a Game Category
+                                {% else %}
+                                    {{ game.category }}
+                                {% endif %}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="console">Console</label>
+                        <select id="console" name="console" class="form-select" aria-label="Choose a Game Console" disabled readOnly >
+                            <option selected>
+                                {% if game.console is not defined %}s
+                                    Choose a Game Console
+                                {% else %}
+                                    {{ game.console }}
+                                {% endif %}
+                            </option>
+                        </select>
+                    </div>
+                </fieldset>
+                <br />
+                <a href="{{ url_for('bp_games_db.edit', id=game.id) }}" class="btn btn-warning">Edit</a>
+                <a href="{{ url_for('bp_games_db.index') }}" class="btn btn-dark">Index</a>
+            </form>
+{% endblock %}

@@ -133,6 +133,7 @@ dmypy.json
 *~*
 *#*
 *.swp
+*.swo
 tags
 TAGS
 .credentials

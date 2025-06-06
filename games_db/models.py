@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from app import db
 
@@ -19,6 +19,20 @@ class GamesDB(db.Model):
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    @staticmethod
+    def show(id: int) -> Any:
+        """
+        Receives:
+            id: int = id to find a GamesDB
+        Returns:
+            game: Optional[GamesDB] = A GamesDB if found. Otherwise, None.
+        """
+        game: Optional[GamesDB] = GamesDB.query.filter_by(id=id).first()
+        if not game:
+            print('No game with id #{id} found in DB')
+
+        return game
 
     @staticmethod
     def save(game: Any) -> bool:
